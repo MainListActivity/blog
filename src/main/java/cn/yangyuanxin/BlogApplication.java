@@ -1,0 +1,15 @@
+package cn.yangyuanxin;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.AutoConfigureAfter;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.mongo.embedded.EmbeddedMongoAutoConfiguration;
+
+@SpringBootApplication
+@AutoConfigureAfter(EmbeddedMongoAutoConfiguration.class)
+public class BlogApplication {
+
+    public static void main(String[] args) {
+        SpringApplication.run(BlogApplication.class, args);
+    }
+}
