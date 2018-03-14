@@ -86,7 +86,7 @@
                 <!--[-->it's minimally designed, fully responsive, built on HTML5/CSS3/<strong>skel</strong>,<!--]-->
                 <!--[-->and, like all my stuff,<!--]-->
                 <br/>
-                <!--[-->released for free under the <a href="#/license">Creative Commons Attribution 3.0</a> license.
+                <!--[-->released for free under the <a href="#">Creative Commons Attribution 3.0</a> license.
                 Have fun!<!--]--></p>
         </header>
 
@@ -126,7 +126,7 @@
 
         <!-- Two -->
         <section class="wrapper style1 container special">
-            <div class="row">
+            <div class="row" id="sy_two">
                 <div class="4u 12u(narrower)">
 
                     <section>
@@ -173,7 +173,7 @@
                 <h2><!--[-->Next look at this<!--]--> <strong><!--[-->cool stuff<!--]--></strong></h2>
             </header>
 
-            <div class="row">
+            <div class="row" id="sy_three">
                 <div class="6u 12u(narrower)">
 
                     <section>
@@ -235,7 +235,7 @@
 
             <footer class="major">
                 <ul class="buttons">
-                    <li><a href="#" class="button">See More</a></li>
+                    <li><a href="" class="button" onclick="nextPage()">See More</a></li>
                 </ul>
             </footer>
 
@@ -282,7 +282,97 @@
 <script th:src="@{/assets/js/skel.min.js}"></script>
 <script th:src="@{/assets/js/util.js}"></script>
 <script th:src="@{/assets/js/main.js}"></script>
+<script type="text/javascript">
+    var limit = 10;
+    var currentPage = 0;
+    var total;
+    $(function () {
+        bindList(0);
 
+    });
+
+    function nextPage() {
+        bindList(currentPage * limit)
+    }
+    function bindList(offset) {
+        $
+            .ajax({
+                url: 'indexJson?type=article&limit=10&offset=' + offset,
+                method: 'get',
+                dataType: 'json',
+                success: function (data) {
+
+                    for (var i = 0; i < data.length; i++) {
+                        switch (data[i].type) {
+                            case "1":
+                                var htmlText = "";
+                                htmlText += '<section class="wrapper style2 container special-alt">';
+                                htmlText += '<div class="row 50%">';
+                                htmlText += '<div class="8u 12u(narrower)">';
+                                htmlText += '<header><h2>' + data[i].title + '</h2></header>';
+                                htmlText += '<p>' + data[i].content + '</p>';
+                                htmlText += '<footer>                        <ul class="buttons">\
+                            <li><a href="#" class="button">Find Out More</a></li>\
+                        </ul>\
+                        </footer>\
+\
+                        </div>\
+                        <div class="4u 12u(narrower) important(narrower)">\
+\
+                            <ul class="featured-icons">\
+                            <li><span class="icon fa-clock-o"><span class="label">Feature 1</span></span></li>\
+                        <li><span class="icon fa-volume-up"><span class="label">Feature 2</span></span></li>\
+                        <li><span class="icon fa-laptop"><span class="label">Feature 3</span></span></li>\
+                        <li><span class="icon fa-inbox"><span class="label">Feature 4</span></span></li>\
+                        <li><span class="icon fa-lock"><span class="label">Feature 5</span></span></li>\
+                        <li><span class="icon fa-cog"><span class="label">Feature 6</span></span></li>\
+                        </ul>\
+\
+                        </div>\
+                        </div>\
+                        </section>';
+                                $("#main").append(htmlText);
+                                break;
+                            case "2":
+                                var htmlText2 = "";
+                                htmlText2 += '<div class="4u 12u(narrower)">\
+    <section>\
+    <span class="icon featured fa-check"></span>\
+                                <header>\
+                                <h3><!--[-->' + data[i].title + '<!--]--></h3>\
+                            </header>\
+                            <p>' + data[i].content + '</p>\
+                            </section>\
+                            </div>';
+                                $("#sy_two").append(htmlText2);
+                                break;
+                            case "3":
+                                var htmlText3 = "";
+                                htmlText3 += '<div class="6u 12u(narrower)">\
+                                    <section>\
+                                    <a href="#" class="image featured">\
+                                <img src="/images/pic04.jpg" alt="" src=""/></a>\
+                                <header>\
+                                <h3><!--[-->' + data[i].title + '<!--]--></h3>\
+                            </header>\
+                            <p>' + data[i].content + '</p>\
+                            </section>\
+                            </div>';
+                                $("#sy_three").append(htmlText3);
+                                break;
+                        }
+
+                    }
+//                    document.getElementById("flagLoad").style.display = "block";
+//                    currentPage++;
+//                    if (total <= currentPage * limit) {
+//                        document.getElementById("flagLoaded").style.display = "block";
+//                        document.getElementById("flagLoad").style.display = "none";
+//                    }
+                }
+            });
+    }
+</script>
 
 </body>
 </html>
