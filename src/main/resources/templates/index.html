@@ -301,7 +301,7 @@
                 method: 'get',
                 dataType: 'json',
                 success: function (data) {
-
+                    total = data.length;
                     for (var i = 0; i < data.length; i++) {
                         switch (data[i].type) {
                             case "1":
@@ -364,11 +364,11 @@
 
                     }
 //                    document.getElementById("flagLoad").style.display = "block";
-//                    currentPage++;
-//                    if (total <= currentPage * limit) {
-//                        document.getElementById("flagLoaded").style.display = "block";
-//                        document.getElementById("flagLoad").style.display = "none";
-//                    }
+                    currentPage++;
+                    if (total <= currentPage * limit) {
+                        document.getElementById("flagLoaded").style.display = "block";
+                        document.getElementById("flagLoad").style.display = "none";
+                    }
                 }
             });
     }
