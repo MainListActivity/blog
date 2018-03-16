@@ -1,9 +1,14 @@
 package cn.yangyuanxin.controller;
 
 import cn.yangyuanxin.domain.Index;
+import cn.yangyuanxin.domain.UserDO;
 import cn.yangyuanxin.repository.IndexRepository;
+import cn.yangyuanxin.service.UserService;
+import cn.yangyuanxin.vo.UserVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -18,6 +23,14 @@ import reactor.core.publisher.Mono;
 public class IndexController {
     private IndexRepository indexRepository;
 
+
+    private UserService userService;
+
+    @Autowired
+    public void setUserService(UserService userService) {
+        this.userService = userService;
+    }
+
     @Autowired
     public void setIndexRepository(IndexRepository indexRepository) {
         this.indexRepository = indexRepository;
@@ -30,20 +43,23 @@ public class IndexController {
 
     @ResponseBody
     @GetMapping("/indexJson")
+    @PreAuthorize("hasRole('USER')")
     public Flux<Index> indexFlux() {
         return indexRepository.findAll();
     }
 
     @ResponseBody
     @GetMapping("/index1")
-    public Mono<Index> indexMono() {
-        return indexRepository.findByUid(1L);
+    public UserVo indexMono(@RequestParam(value = "username") String userName) {
+        return userService.getUserRole(userName);
     }
 
     @ResponseBody
     @PostMapping("/indexJson")
-    public Mono<Index> insertIndex(@RequestBody Index index) {
-        return indexRepository.save(index);
+    public int insertIndex(@RequestParam Long id, @RequestParam String password) {
+        UserDO userDO = userService.get(id);
+        userDO.setPassword(PasswordEncoderFactories.createDelegatingPasswordEncoder().encode(password));
+        return userService.save(userDO);
     }
 
 
@@ -52,7 +68,6 @@ public class IndexController {
         return "/index";
     }
 
-    @PreAuthorize("hasPermission(#rememberMe,'IS_AUTHENTICATED_FULLY')")
     @RequestMapping("/contact")
     public String contact() {
         return "contact";
