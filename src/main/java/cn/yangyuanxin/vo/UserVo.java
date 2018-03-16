@@ -12,6 +12,15 @@ public class UserVo {
     private String username;
     private String password;
     private List<String> roles;
+    private List<String> menus;
+
+    public List<String> getMenus() {
+        return menus;
+    }
+
+    public void setMenus(List<String> menus) {
+        this.menus = menus;
+    }
 
     public String getUsername() {
         return username;

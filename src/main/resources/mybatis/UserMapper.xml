@@ -183,15 +183,21 @@
         <collection property="roles" ofType="java.lang.String">
             <result property="roles" column="role_sign" javaType="java.lang.String"/>
         </collection>
+        <collection property="menus" ofType="java.lang.String">
+            <result property="menus" column="perms" javaType="java.lang.String"/>
+        </collection>
     </resultMap>
     <select id="getUserRole" resultMap="userRoles">
         SELECT
             u.username,
             u.password,
-            r.role_sign
+            r.role_sign,
+            m.perms
         FROM sys_user u
             LEFT JOIN sys_user_role ur ON u.user_id = ur.user_id
             LEFT JOIN sys_role r ON r.role_id = ur.role_id
+            LEFT JOIN sys_role_menu rm ON rm.role_id = r.role_id
+            LEFT JOIN sys_menu m ON rm.menu_id = m.menu_id
         WHERE u.username = #{value}
     </select>
 </mapper>

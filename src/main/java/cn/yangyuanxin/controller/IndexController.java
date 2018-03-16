@@ -6,14 +6,11 @@ import cn.yangyuanxin.repository.IndexRepository;
 import cn.yangyuanxin.service.UserService;
 import cn.yangyuanxin.vo.UserVo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 
 /**
  * Created by y
@@ -43,7 +40,6 @@ public class IndexController {
 
     @ResponseBody
     @GetMapping("/indexJson")
-    @PreAuthorize("hasRole('USER')")
     public Flux<Index> indexFlux() {
         return indexRepository.findAll();
     }
@@ -59,7 +55,7 @@ public class IndexController {
     public int insertIndex(@RequestParam Long id, @RequestParam String password) {
         UserDO userDO = userService.get(id);
         userDO.setPassword(PasswordEncoderFactories.createDelegatingPasswordEncoder().encode(password));
-        return userService.save(userDO);
+        return userService.update(userDO);
     }
 
 

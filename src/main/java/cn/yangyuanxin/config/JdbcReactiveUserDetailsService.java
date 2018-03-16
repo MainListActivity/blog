@@ -1,6 +1,5 @@
 package cn.yangyuanxin.config;
 
-import cn.yangyuanxin.domain.UserDO;
 import cn.yangyuanxin.service.UserService;
 import cn.yangyuanxin.vo.UserVo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,8 +7,6 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.security.core.userdetails.ReactiveUserDetailsService;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.factory.PasswordEncoderFactories;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
@@ -24,7 +21,6 @@ import reactor.core.publisher.Mono;
 @Primary
 public class JdbcReactiveUserDetailsService implements ReactiveUserDetailsService {
     private UserService userService;
-    private static final PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
 
     @Autowired
     public void setUserService(UserService userService) {
@@ -36,8 +32,8 @@ public class JdbcReactiveUserDetailsService implements ReactiveUserDetailsServic
         UserVo userVo = userService.getUserRole(username);
         UserDetails userDetails = User.withUsername(username)
                 .password(userVo.getPassword())
-                .passwordEncoder(passwordEncoder::encode)
                 .roles(userVo.getRoles().toArray(new String[]{}))
+                .authorities(userVo.getMenus().toArray(new String[]{}))
                 .build();
         return Mono.just(userDetails);
     }

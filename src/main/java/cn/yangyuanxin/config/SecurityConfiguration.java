@@ -6,12 +6,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableReactiveMethodSecurity;
 import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity;
 import org.springframework.security.config.web.server.ServerHttpSecurity;
-import org.springframework.security.core.userdetails.MapReactiveUserDetailsService;
-import org.springframework.security.core.userdetails.ReactiveUserDetailsService;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.factory.PasswordEncoderFactories;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.server.SecurityWebFilterChain;
 import org.springframework.security.web.server.util.matcher.ServerWebExchangeMatchers;
 
@@ -29,22 +23,22 @@ public class SecurityConfiguration {
         http
                 .authorizeExchange()
                 .matchers(PathRequest.toStaticResources().atCommonLocations(),
-                        ServerWebExchangeMatchers.pathMatchers("/images/**", "/assets/**", "/files/**", "/indexJson")).permitAll()
+                        ServerWebExchangeMatchers.pathMatchers("/images/**", "/assets/**", "/files/**")).permitAll()
                 .pathMatchers("/**", "/bar")
                 .authenticated().and()
                 .formLogin();
         return http.build();
     }
-
-    @Bean
-    public ReactiveUserDetailsService userDetailsService() {
-        PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
-
-        UserDetails rob = User.withUsername("rob").password(passwordEncoder.encode("rob")).roles("USER").build();
-        UserDetails admin = User.withUsername("admin").password(passwordEncoder.encode("admin")).roles("ADMIN").build();
-
-        return new MapReactiveUserDetailsService(rob, admin);
-    }
+//
+//    @Bean
+//    public ReactiveUserDetailsService userDetailsService() {
+//        PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
+//
+//        UserDetails rob = User.withUsername("rob").password(passwordEncoder.encode("rob")).roles("USER").build();
+//        UserDetails admin = User.withUsername("admin").password(passwordEncoder.encode("admin")).roles("ADMIN").build();
+//
+//        return new MapReactiveUserDetailsService(rob, admin);
+//    }
 
 
 //    @Bean
