@@ -64,7 +64,7 @@ public class IndexController {
 
     @RequestMapping("/index")
     public String index(Model model) {
-        return "/index";
+        return "index";
     }
 
     @RequestMapping("/contact")

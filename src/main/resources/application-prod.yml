@@ -1,11 +1,8 @@
 spring:
-  data:
-    mongodb:
-      uri: mongodb://192.168.78.129/test
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
     driverClassName: com.mysql.jdbc.Driver
-    url: jdbc:mysql://192.168.78.129:3306/blog?useUnicode=true&characterEncoding=utf8
+    url: jdbc:mysql://localhost:3306/blog?useUnicode=true&characterEncoding=utf8
     username: 'blog'
     password: '!QAZ1qaz'
     initialSize: 1
