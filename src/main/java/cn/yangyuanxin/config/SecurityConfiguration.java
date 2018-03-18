@@ -23,7 +23,7 @@ public class SecurityConfiguration {
         http
                 .authorizeExchange()
                 .matchers(PathRequest.toStaticResources().atCommonLocations(),
-                        ServerWebExchangeMatchers.pathMatchers("/images/**", "/assets/**", "/files/**")).permitAll()
+                        ServerWebExchangeMatchers.pathMatchers("/images/**", "/assets/**", "/files/**","/index","/","/job")).permitAll()
                 .pathMatchers("/**", "/bar")
                 .authenticated().and()
                 .formLogin();

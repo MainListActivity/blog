@@ -6,11 +6,13 @@ import cn.yangyuanxin.repository.IndexRepository;
 import cn.yangyuanxin.service.UserService;
 import cn.yangyuanxin.vo.UserVo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 /**
  * Created by y
@@ -45,9 +47,10 @@ public class IndexController {
     }
 
     @ResponseBody
+    @PreAuthorize("hasAuthority('system:index1:read')")
     @GetMapping("/index1")
-    public UserVo indexMono(@RequestParam(value = "username") String userName) {
-        return userService.getUserRole(userName);
+    public Mono<UserVo> indexMono(@RequestParam(value = "username") String userName) {
+        return Mono.just(userService.getUserRole(userName));
     }
 
     @ResponseBody
